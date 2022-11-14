@@ -13,6 +13,14 @@ updates:
       - "scruti"
     reviewers:
       - "scruti"
+  - package-ecosystem: "docker"
+    directory: "/.dockerdev"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "scruti"
+    reviewers:
+      - "scruti"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
