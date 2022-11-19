@@ -1,0 +1,56 @@
+name: Tests
+
+on: [push]
+
+env:
+  DATABASE_URL: postgres://localhost:5432/argentarii_test
+  PGHOST: localhost
+  PGUSER: postgres
+  RAILS_ENV: test
+
+jobs:
+  rspec:
+    name: "Test suite"
+    runs-on: ubuntu-latest
+
+    # Example for can be found here:
+    # https://github.com/actions/example-services/tree/master/.github/workflows
+    services:
+      postgres:
+        image: postgres:14.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: postgres
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1.2
+    - uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.OS }}-gems
+        restore-keys: |
+          ${{ runner.OS }}-gems
+          ${{ runner.OS }}-gems-
+          ${{ runner.OS }}-
+    - name: Install Ruby Gems
+      run: |
+        gem install bundler -v 2.3.20
+        bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+    - name: Prepare application database
+      run: |
+        bin/rails db:create db:schema:load
+    - name: Prepare application assets
+      run: |
+        bin/rails tailwindcss:build
+    - name: Run Tests
+      run: |
+        bundle exec rspec spec
+
+
