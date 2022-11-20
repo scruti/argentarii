@@ -58,9 +58,24 @@ services:
       sidekiq:
         condition: service_started
 
+  dev:
+    <<: *backend
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3000:3000'
+    depends_on:
+      sidekiq:
+        condition: service_started
+      tailwind:
+        condition: service_started
+
   sidekiq:
     <<: *backend
     command: bundle exec sidekiq
+
+  tailwind:
+    <<: *backend
+    command: bundle exec rails tailwindcss:watch
 
   postgres:
     image: postgres:14
