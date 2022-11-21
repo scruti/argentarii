@@ -1,0 +1,22 @@
+<div id="<%= dom_id bank_account %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Bank:</strong>
+    <%= bank_account.bank %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Account:</strong>
+    <%= bank_account.account %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Balance:</strong>
+    <%= bank_account.balance.format %>
+  </p>
+
+  <% if action_name != "show" %>
+    <%= link_to "Show this bank account", bank_account, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Edit this bank account', edit_bank_account_path(bank_account), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>

@@ -30,4 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  bank_accounts:
+    create:
+      notice: 'Bank account was successfully created.'
+    update:
+      notice: 'Bank account was successfully updated.'
+    destroy:
+      notice: 'Bank account was successfully deleted.'

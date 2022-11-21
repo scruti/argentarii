@@ -6,4 +6,17 @@ require:
   - rubocop-rspec
 
 AllCops:
-    NewCops: enable
+  NewCops: enable
+
+RSpec/ExampleLength:
+  Exclude:
+    - spec/system/**/*.rb
+    - spec/views/**/*.rb
+RSpec/MultipleExpectations:
+  Max: 2
+  Exclude:
+    - spec/system/**/*.rb
+    - spec/views/**/*.rb
+
+Style/Documentation:
+  Enabled: false
