@@ -41,7 +41,7 @@ jobs:
           ${{ runner.OS }}-
     - name: Install Ruby Gems
       run: |
-        gem install bundler -v 2.3.20
+        gem install bundler -v 2.4.8
         bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
     - name: Prepare application database
       run: |
