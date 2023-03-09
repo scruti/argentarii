@@ -12,6 +12,7 @@ class BankAccountsController < ApplicationController
   # GET /bank_accounts/new
   def new
     @bank_account = BankAccount.new
+    @bank_account.build_current_balance
   end
 
   # GET /bank_accounts/1/edit
@@ -62,6 +63,6 @@ class BankAccountsController < ApplicationController
   end
 
   def bank_account_params
-    params.require(:bank_account).permit(:bank, :account, :balance)
+    params.require(:bank_account).permit(:bank, :account, current_balance_attributes: [:id, :balance])
   end
 end

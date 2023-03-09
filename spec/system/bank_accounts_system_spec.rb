@@ -32,7 +32,8 @@ RSpec.describe 'Bank Accounts' do
   end
 
   it 'Editing a bank account' do
-    bank_account = BankAccount.create!(bank: 'FooBank', account: 'BarAccount', balance: '462.23')
+    balance = BankAccountBalance.new(balance: '462.23')
+    bank_account = BankAccount.create!(bank: 'FooBank', account: 'BarAccount', current_balance: balance)
     visit '/'
 
     expect(page).to have_css('h1', text: 'Bank accounts')
@@ -69,7 +70,8 @@ RSpec.describe 'Bank Accounts' do
   end
 
   it 'Deleting a bank account' do
-    bank_account = BankAccount.create!(bank: 'FooBank', account: 'BarAccount', balance: '462.23')
+    balance = BankAccountBalance.new(balance: '462.23')
+    bank_account = BankAccount.create!(bank: 'FooBank', account: 'BarAccount', current_balance: balance)
     visit '/'
 
     expect(page).to have_css('h1', text: 'Bank accounts')

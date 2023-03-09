@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'bank_accounts/edit' do
+  let(:balance) { BankAccountBalance.new(balance: '462.23') }
   let(:bank_account) do
-    BankAccount.create!(bank: 'FooBank', account: 'BarAccount', balance: '462.23')
+    BankAccount.create!(bank: 'FooBank', account: 'BarAccount', current_balance: balance)
   end
 
   before do

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'bank_accounts/new' do
-  let(:bank_account) { BankAccount.new }
+  let(:bank_account) { BankAccount.new(current_balance: BankAccountBalance.new) }
 
   it 'displays a new bank account form' do
     assign(:bank_account, bank_account)
