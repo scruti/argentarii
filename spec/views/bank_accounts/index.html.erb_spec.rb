@@ -1,8 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'bank_accounts/index' do
-  let(:first_account) { BankAccount.create!(bank: 'FirstBank', account: 'FirstAccount', balance: '24.32') }
-  let(:second_account) { BankAccount.create!(bank: 'SecondBank', account: 'SecondAccount', balance: '134.00') }
+  let(:first_account) do
+    BankAccount.create!(bank: 'FirstBank',
+                        account: 'FirstAccount',
+                        current_balance: BankAccountBalance.new(balance: '24.32'))
+  end
+
+  let(:second_account) do
+    BankAccount.create!(bank: 'SecondBank',
+                        account: 'SecondAccount',
+                        current_balance: BankAccountBalance.new(balance: '134.00'))
+  end
 
   before do
     assign(:bank_accounts, [first_account, second_account])

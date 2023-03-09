@@ -37,3 +37,13 @@ en:
       notice: 'Bank account was successfully updated.'
     destroy:
       notice: 'Bank account was successfully deleted.'
+  activerecord:
+    attributes:
+      bank_account/current_balance: # This is how nested attributes are acessed
+        balance: "Account balance"
+    errors:
+      models:
+        bank_account_balance:
+          attributes:
+            balance:
+              not_a_number: "must be a number"

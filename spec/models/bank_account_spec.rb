@@ -37,17 +37,5 @@ RSpec.describe BankAccount do
       expect(bank_account).not_to be_valid
       expect(bank_account.errors[:account]).to include('is too long (maximum is 50 characters)')
     end
-
-    it 'validates presence of balance' do
-      bank_account.balance_cents = nil
-      expect(bank_account).not_to be_valid
-      expect(bank_account.errors[:balance]).to include("can't be blank")
-    end
-
-    it 'validates numericality of balance' do
-      bank_account.balance = 'abc'
-      expect(bank_account).not_to be_valid
-      expect(bank_account.errors[:balance]).to include('is not a number')
-    end
   end
 end

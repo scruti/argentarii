@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe '/bank_accounts' do
   let(:valid_attributes) do
-    { bank: 'BankName', account: 'AccountName', balance: '300.43' }
+    { bank: 'BankName', account: 'AccountName', current_balance_attributes: { balance: '300.43' } }
   end
 
   let(:invalid_attributes) do
-    { bank: '', account: '', balance: '' }
+    { bank: '', account: '', current_balance_attributes: { balance: '300.43' } }
   end
 
   describe 'GET /index' do
@@ -69,21 +69,28 @@ RSpec.describe '/bank_accounts' do
   end
 
   describe 'PATCH /update' do
+    let(:bank_account) { BankAccount.create! valid_attributes }
+
     context 'with valid parameters' do
       let(:new_attributes) do
-        { bank: 'NewBankName', account: 'NewAccountName', balance: '10240.00' }
+        { bank: 'NewBankName',
+          account: 'NewAccountName',
+          current_balance_attributes: { id: bank_account.current_balance.id, balance: '10240.00' } }
       end
 
       it 'updates the requested bank_account' do
-        bank_account = BankAccount.create! valid_attributes
         patch bank_account_url(bank_account), params: { bank_account: new_attributes }
-        expect(bank_account.reload).to have_attributes(bank: 'NewBankName',
-                                                       account: 'NewAccountName',
-                                                       balance_cents: 1_024_000)
+        expect(bank_account.reload).to have_attributes(bank: 'NewBankName', account: 'NewAccountName')
+        expect(bank_account.current_balance).to have_attributes(balance_cents: 1_024_000)
+      end
+
+      it 'keeps the previous balance in the account balance history' do
+        patch bank_account_url(bank_account), params: { bank_account: new_attributes }
+        expect(bank_account.reload.balances.count).to eq(2)
+        expect(bank_account.balances.first).to have_attributes(balance_cents: 30_043)
       end
 
       it 'redirects to the bank_account' do
-        bank_account = BankAccount.create! valid_attributes
         patch bank_account_url(bank_account), params: { bank_account: new_attributes }
         bank_account.reload
         expect(response).to redirect_to(bank_account_url(bank_account))
@@ -92,7 +99,6 @@ RSpec.describe '/bank_accounts' do
 
     context 'with invalid parameters' do
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-        bank_account = BankAccount.create! valid_attributes
         patch bank_account_url(bank_account), params: { bank_account: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
