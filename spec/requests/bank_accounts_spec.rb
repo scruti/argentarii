@@ -10,18 +10,22 @@ RSpec.describe '/bank_accounts' do
   end
 
   describe 'GET /index' do
-    it 'renders a successful response' do
+    it 'renders a the list of bank accounts' do
       BankAccount.create! valid_attributes
       get bank_accounts_url
       expect(response).to be_successful
+      expect(response.body)
+        .to include('Bank accounts').and include('BankName').and include('AccountName').and include('£300.43')
     end
   end
 
   describe 'GET /show' do
-    it 'renders a successful response' do
+    it 'renders the bank account details' do
       bank_account = BankAccount.create! valid_attributes
       get bank_account_url(bank_account)
       expect(response).to be_successful
+      expect(response.body)
+        .to include('BankName').and include('AccountName').and include('£300.43')
     end
   end
 

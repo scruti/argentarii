@@ -33,7 +33,12 @@ RSpec.describe 'Bank Accounts' do
 
   it 'Editing a bank account' do
     balance = BankAccountBalance.new(balance: '462.23')
+
+    travel_to Time.zone.local(2023, 3, 10, 1, 4, 44)
     bank_account = BankAccount.create!(bank: 'FooBank', account: 'BarAccount', current_balance: balance)
+    travel_back
+
+    travel_to Time.zone.local(2023, 3, 15, 13, 6, 21)
     visit '/'
 
     expect(page).to have_css('h1', text: 'Bank accounts')
@@ -59,6 +64,8 @@ RSpec.describe 'Bank Accounts' do
     expect(page).to have_css('p', text: 'Bank: NewBank')
     expect(page).to have_css('p', text: 'Account: NewAccount')
     expect(page).to have_css('p', text: 'Balance: £2,000.00')
+    expect(page).to have_css('li', text: '2023-03-10 01:04:44 - £462.23')
+    expect(page).to have_css('li', text: '2023-03-15 13:06:21 - £2,000.00')
 
     click_link 'Back to bank accounts'
 
@@ -67,6 +74,7 @@ RSpec.describe 'Bank Accounts' do
     expect(page).to have_css('p', text: 'Bank: NewBank')
     expect(page).to have_css('p', text: 'Account: NewAccount')
     expect(page).to have_css('p', text: 'Balance: £2,000.00')
+    travel_back
   end
 
   it 'Deleting a bank account' do
