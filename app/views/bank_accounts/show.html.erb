@@ -1,11 +1,14 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<div class="mx-auto md:w-2/3 w-full block">
+  <h1 class="font-bold text-4xl"><%= @bank_account.account %></h1>
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
 
+  <div class="block my-5">
     <%= render @bank_account %>
+  </div>
 
+  <div class="block my-5">
     <%= link_to 'Edit this bank account', edit_bank_account_path(@bank_account), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <div class="inline-block ml-2">
       <%= button_to 'Delete this bank account',
@@ -15,5 +18,16 @@
                     class: "mt-2 rounded-lg py-3 px-5 bg-red-300 font-medium" %>
     </div>
     <%= link_to 'Back to bank accounts', bank_accounts_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  </div>
+
+  <div class="block my-5">
+    <h2 class="font-bold text-2xl my-2">Balance history</h2>
+    <ul class="list-disc">
+      <% @bank_account.balances.each do |account_balance| %>
+        <li>
+          <strong class="font-medium mb-1"><%= account_balance.created_at.to_fs(:db) %></strong> - <%= account_balance.balance.format %>
+        </li>
+      <% end %>
+    </div>
   </div>
 </div>
